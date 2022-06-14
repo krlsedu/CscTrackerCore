@@ -4,6 +4,7 @@ import com.csctracker.dto.Conversor;
 import com.csctracker.dto.UserDTO;
 import com.csctracker.model.User;
 import com.csctracker.repository.UserRepository;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
 import org.springframework.beans.factory.annotation.Value;
@@ -32,7 +33,13 @@ public class UserInfoService {
         }
         var response = Unirest.get("http://" + ipAuth + ":" + portAuth + "/current-user")
                 .header("Authorization", RequestInfo.getHeader("Authorization"))
-                .asObject(UserDTO.class);
-        return conversor.toE(response.getBody());
+                .asString();
+        RequestInfo.checkResponse(response);
+        try {
+            var userDto = conversor.toD(response.getBody());
+            return conversor.toE(userDto);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

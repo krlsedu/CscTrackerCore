@@ -1,5 +1,7 @@
 package com.csctracker.service;
 
+import com.csctracker.configs.UnAuthorized;
+import com.mashape.unirest.http.HttpResponse;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.util.ContentCachingRequestWrapper;
@@ -78,5 +80,19 @@ public class RequestInfo {
 
     public static String getPath() {
         return getRequest().getRequestURI();
+    }
+
+    public static void checkResponse(HttpResponse<String> response) {
+        if (response.getStatus() < 200 || response.getStatus() > 299) {
+            switch (response.getStatus()) {
+                case 401:
+                case 403:
+                    throw new UnAuthorized();
+                case 404:
+                    throw new RuntimeException("Not Found");
+                default:
+                    throw new RuntimeException("Internal Server Error");
+            }
+        }
     }
 }
