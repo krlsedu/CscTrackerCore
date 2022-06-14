@@ -3,7 +3,6 @@ package com.csctracker.service;
 import com.csctracker.model.Configs;
 import com.csctracker.model.User;
 import com.csctracker.repository.ConfigsRepository;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.mashape.unirest.http.exceptions.UnirestException;
 import org.springframework.stereotype.Service;
 
@@ -13,22 +12,22 @@ import java.util.TimeZone;
 public class ConfigsService {
     private final ConfigsRepository configsRepository;
 
-    private final UserInfoService userInfoService;
+    private final UserInfoRemoteService userInfoRemoteService;
 
-    public ConfigsService(ConfigsRepository configsRepository, UserInfoService userInfoService) {
+    public ConfigsService(ConfigsRepository configsRepository, UserInfoRemoteService userInfoRemoteService) {
         this.configsRepository = configsRepository;
-        this.userInfoService = userInfoService;
+        this.userInfoRemoteService = userInfoRemoteService;
     }
 
     public Configs getConfigByUser() throws UnirestException {
-        return getConfigByUser(userInfoService.getUser());
+        return getConfigByUser(userInfoRemoteService.getUser());
     }
     public Configs getConfigByUser(User user) {
         return configsRepository.findByUser(user);
     }
 
     public void save(Configs configs) throws UnirestException {
-        var user = userInfoService.getUser();
+        var user = userInfoRemoteService.getUser();
         save(configs, user);
     }
     public void save(Configs configs, User user)  {
@@ -55,7 +54,7 @@ public class ConfigsService {
     }
 
     public TimeZone getTimeZone() throws UnirestException {
-        return getTimeZone(userInfoService.getUser());
+        return getTimeZone(userInfoRemoteService.getUser());
     }
 
     public TimeZone getTimeZone(User user) {

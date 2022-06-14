@@ -13,15 +13,15 @@ import java.util.Date;
 public class DateService {
     private final ConfigsService configsService;
 
-    private final UserInfoService userInfoService;
+    private final UserInfoRemoteService userInfoRemoteService;
 
-    public DateService(ConfigsService configsService, UserInfoService userInfoService) {
+    public DateService(ConfigsService configsService, UserInfoRemoteService userInfoRemoteService) {
         this.configsService = configsService;
-        this.userInfoService = userInfoService;
+        this.userInfoRemoteService = userInfoRemoteService;
     }
 
     public Date getIniDate(String period) throws UnirestException {
-        return getIniDate(period, userInfoService.getUser());
+        return getIniDate(period, userInfoRemoteService.getUser());
     }
 
     public Date getIniDate(String period, User user)  {
@@ -63,7 +63,7 @@ public class DateService {
     }
 
     public Date getEndDate(String period) throws UnirestException {
-        return getEndDate(period, userInfoService.getUser());
+        return getEndDate(period, userInfoRemoteService.getUser());
     }
 
     public Date getEndDate(String period, User user) {
@@ -79,7 +79,7 @@ public class DateService {
         }
     }
     private Date today() throws UnirestException {
-        return today(userInfoService.getUser());
+        return today(userInfoRemoteService.getUser());
     }
 
     private Date today(User user) {

@@ -11,7 +11,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Service
-public class UserInfoService {
+public class UserInfoRemoteService {
     private final Conversor<User, UserDTO> conversor;
     @Value("${auth.ip:#{\"127.0.0.1\"}}")
     private String ipAuth;
@@ -20,7 +20,7 @@ public class UserInfoService {
 
     private final UserRepository userRepository;
 
-    public UserInfoService(UserRepository userRepository) {
+    public UserInfoRemoteService(UserRepository userRepository) {
         this.userRepository = userRepository;
         this.conversor = new Conversor<>(User.class, UserDTO.class);
     }
