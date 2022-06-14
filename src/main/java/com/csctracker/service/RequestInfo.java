@@ -3,7 +3,7 @@ package com.csctracker.service;
 import com.csctracker.configs.ContentCaching;
 import com.csctracker.configs.UnAuthorized;
 import com.csctracker.model.User;
-import com.mashape.unirest.http.HttpResponse;
+import kong.unirest.HttpResponse;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 

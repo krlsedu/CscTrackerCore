@@ -5,8 +5,8 @@ import com.csctracker.dto.UserDTO;
 import com.csctracker.model.User;
 import com.csctracker.repository.UserRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.mashape.unirest.http.Unirest;
-import com.mashape.unirest.http.exceptions.UnirestException;
+import kong.unirest.Unirest;
+import kong.unirest.UnirestException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 

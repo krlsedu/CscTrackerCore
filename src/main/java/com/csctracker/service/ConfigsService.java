@@ -3,7 +3,7 @@ package com.csctracker.service;
 import com.csctracker.model.Configs;
 import com.csctracker.model.User;
 import com.csctracker.repository.ConfigsRepository;
-import com.mashape.unirest.http.exceptions.UnirestException;
+import kong.unirest.UnirestException;
 import org.springframework.stereotype.Service;
 
 import java.util.TimeZone;
@@ -12,11 +12,8 @@ import java.util.TimeZone;
 public class ConfigsService {
     private final ConfigsRepository configsRepository;
 
-    private final UserInfoRemoteService userInfoRemoteService;
-
-    public ConfigsService(ConfigsRepository configsRepository, UserInfoRemoteService userInfoRemoteService) {
+    public ConfigsService(ConfigsRepository configsRepository) {
         this.configsRepository = configsRepository;
-        this.userInfoRemoteService = userInfoRemoteService;
     }
 
     public Configs getConfigByUser() {
