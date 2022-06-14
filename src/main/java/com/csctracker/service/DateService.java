@@ -1,7 +1,6 @@
 package com.csctracker.service;
 
 import com.csctracker.model.User;
-import com.mashape.unirest.http.exceptions.UnirestException;
 import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
@@ -13,18 +12,15 @@ import java.util.Date;
 public class DateService {
     private final ConfigsService configsService;
 
-    private final UserInfoRemoteService userInfoRemoteService;
-
-    public DateService(ConfigsService configsService, UserInfoRemoteService userInfoRemoteService) {
+    public DateService(ConfigsService configsService) {
         this.configsService = configsService;
-        this.userInfoRemoteService = userInfoRemoteService;
     }
 
-    public Date getIniDate(String period) throws UnirestException {
-        return getIniDate(period, userInfoRemoteService.getUser());
+    public Date getIniDate(String period) {
+        return getIniDate(period, RequestInfo.getUser());
     }
 
-    public Date getIniDate(String period, User user)  {
+    public Date getIniDate(String period, User user) {
         if (period == null) {
             return today(user);
         }
@@ -62,8 +58,8 @@ public class DateService {
         return today(user);
     }
 
-    public Date getEndDate(String period) throws UnirestException {
-        return getEndDate(period, userInfoRemoteService.getUser());
+    public Date getEndDate(String period) {
+        return getEndDate(period, RequestInfo.getUser());
     }
 
     public Date getEndDate(String period, User user) {
@@ -78,8 +74,9 @@ public class DateService {
                 return getEndDay(new Date(time));
         }
     }
-    private Date today() throws UnirestException {
-        return today(userInfoRemoteService.getUser());
+
+    private Date today() {
+        return today(RequestInfo.getUser());
     }
 
     private Date today(User user) {

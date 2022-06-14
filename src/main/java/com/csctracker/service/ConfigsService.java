@@ -19,18 +19,20 @@ public class ConfigsService {
         this.userInfoRemoteService = userInfoRemoteService;
     }
 
-    public Configs getConfigByUser() throws UnirestException {
-        return getConfigByUser(userInfoRemoteService.getUser());
+    public Configs getConfigByUser() {
+        return getConfigByUser(RequestInfo.getUser());
     }
+
     public Configs getConfigByUser(User user) {
         return configsRepository.findByUser(user);
     }
 
     public void save(Configs configs) throws UnirestException {
-        var user = userInfoRemoteService.getUser();
+        var user = RequestInfo.getUser();
         save(configs, user);
     }
-    public void save(Configs configs, User user)  {
+
+    public void save(Configs configs, User user) {
         if (!configsRepository.existsByUser(user)) {
             configs.setUser(user);
         } else {
@@ -54,7 +56,7 @@ public class ConfigsService {
     }
 
     public TimeZone getTimeZone() throws UnirestException {
-        return getTimeZone(userInfoRemoteService.getUser());
+        return getTimeZone(RequestInfo.getUser());
     }
 
     public TimeZone getTimeZone(User user) {
