@@ -28,7 +28,7 @@ public class RequestInterceptor extends GenericFilterBean {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         HttpServletResponse response = (HttpServletResponse) servletResponse;
         ContentCaching wrappedRequest = new ContentCaching(request);
-        if (!"OPTIONS".equals(request.getMethod()) && !SECURE_REQUEST) {
+        if (!"OPTIONS".equals(request.getMethod()) && !SECURE_REQUEST && !request.getRequestURI().contains("/actuator/")) {
             try {
                 wrappedRequest.setUser(userInfoRemoteService.getUser());
             } catch (Exception e) {
