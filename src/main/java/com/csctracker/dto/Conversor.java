@@ -55,4 +55,13 @@ public class Conversor<E, D> {
     public ObjectMapper getObjectMapper() {
         return objectMapper;
     }
+
+    public static ObjectMapper getObjectMapperStatic() {
+        return new ObjectMapper()
+                .configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false)
+                .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
+                .configure(SerializationFeature.WRITE_DATES_WITH_ZONE_ID, false)
+                .setSerializationInclusion(JsonInclude.Include.NON_NULL);
+    }
+
 }
