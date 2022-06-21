@@ -30,7 +30,7 @@ public class MetricGenerator {
     @Value("${metric_service.port:5000}")
     private String metricServicePort;
 
-    @Around("execution(* com.csctracker..service..*(..)) || execution(* com.csctracker..controller..*(..)) || execution(* com.csctracker..repository..*(..)) || execution(* com.csctracker..dto..*(..)) || execution(* com.csctracker..model..*(..))")
+    @Around("execution(* com.csctracker..service..*(..)) || execution(* com.csctracker..controller..*(..)) || execution(* com.csctracker..repository..*(..)) || execution(* com.csctracker..dto..*(..)) || execution(* com.csctracker..model..*(..)) || execution(* com.csctracker..core..*(..))")
     public Object logExecutionTime(ProceedingJoinPoint joinPoint) throws Throwable {
         long start = System.currentTimeMillis();
         var metric = new Metric();
