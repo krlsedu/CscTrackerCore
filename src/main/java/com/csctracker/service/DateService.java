@@ -5,7 +5,6 @@ import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
 import java.util.Date;
 
 @Service
@@ -24,7 +23,8 @@ public class DateService {
         if (period == null) {
             return today(user);
         }
-        long time = LocalDateTime.now().atZone(configsService.getTimeZone(user).toZoneId()).toInstant().toEpochMilli();
+//        long time = LocalDateTime.now().atZone(configsService.getTimeZone(user).toZoneId()).toInstant().toEpochMilli();
+        long time = new Date().getTime();
         switch (period) {
             case "today":
                 return today(user);
@@ -37,7 +37,6 @@ public class DateService {
             case "year":
                 return getStartDay(new Date(time - 365L * 24 * 60 * 60 * 1000));
         }
-        time = new Date().getTime();
         String unit = period.replaceAll("\\d", "");
         int value = Integer.parseInt(period.replaceAll("\\D", ""));
         switch (unit) {
@@ -64,7 +63,8 @@ public class DateService {
     }
 
     public Date getEndDate(String period, User user) {
-        long time = LocalDateTime.now().atZone(configsService.getTimeZone(user).toZoneId()).toInstant().toEpochMilli();
+//        long time = LocalDateTime.now().atZone(configsService.getTimeZone(user).toZoneId()).toInstant().toEpochMilli();
+        long time = new Date().getTime();
         if (period == null) {
             return getEndDay(new Date(time));
         }
@@ -92,6 +92,7 @@ public class DateService {
 
     private Date getStartDay(Date date) {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        simpleDateFormat.setTimeZone(configsService.getTimeZone());
         try {
             return simpleDateFormat.parse(simpleDateFormat.format(date));
         } catch (ParseException e) {
@@ -101,7 +102,9 @@ public class DateService {
 
     private Date getEndDay(Date date) {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.SSS");
+        simpleDateFormat.setTimeZone(configsService.getTimeZone());
         SimpleDateFormat simpleDateFormatEnd = new SimpleDateFormat("yyyy-MM-dd 23:59:59.999");
+        simpleDateFormatEnd.setTimeZone(configsService.getTimeZone());
         try {
             return simpleDateFormat.parse(simpleDateFormatEnd.format(date));
         } catch (ParseException e) {
