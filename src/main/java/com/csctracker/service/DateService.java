@@ -31,12 +31,13 @@ public class DateService {
             case "yesterday":
                 return getStartDay(new Date(time - 24 * 60 * 60 * 1000));
             case "week":
-                return getStartDay(new Date(time - 7 * 24 * 60 * 60 * 1000));
+                return getStartDay(new Date(time - 6 * 24 * 60 * 60 * 1000));
             case "month":
                 return getStartDay(new Date(time - 30L * 24 * 60 * 60 * 1000));
             case "year":
                 return getStartDay(new Date(time - 365L * 24 * 60 * 60 * 1000));
         }
+        time = new Date().getTime();
         String unit = period.replaceAll("\\d", "");
         int value = Integer.parseInt(period.replaceAll("\\D", ""));
         switch (unit) {
