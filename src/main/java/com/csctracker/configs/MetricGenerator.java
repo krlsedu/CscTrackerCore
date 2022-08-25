@@ -48,10 +48,10 @@ public class MetricGenerator {
             metric.setFullClassName(declaringTypeName);
             metric.setExecutionTime(executionTime);
             try {
-                log.info(Unirest.post(metricServiceHost + ":" + metricServicePort + "/metric")
+                Unirest.post(metricServiceHost + ":" + metricServicePort + "/metric")
                         .header("Content-Type", "application/json")
                         .body(metric)
-                        .asString());
+                        .asString();
             } catch (Exception e) {
                 log.error(e);
             }
