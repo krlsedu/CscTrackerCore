@@ -28,6 +28,10 @@ public class Configs {
     @Type(type = "org.hibernate.type.TextType")
     private String timeZone;
 
+    @Lob
+    @Type(type = "org.hibernate.type.TextType")
+    private String configs;
+
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
