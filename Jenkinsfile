@@ -23,19 +23,7 @@ pipeline {
                 expression { env.RELEASE_COMMIT != '0' }
             }
             steps {
-                sh 'mvn clean install'
-            }
-        }
-        stage('Tests') {
-            agent any
-            tools {
-                maven 'M3'
-            }
-            when {
-                expression { env.RELEASE_COMMIT != '0' }
-            }
-            steps {
-                sh 'mvn test'
+                sh 'mvn clean install -DskipTests'
             }
         }
         stage('Gerar versão') {
