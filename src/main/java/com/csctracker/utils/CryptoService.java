@@ -1,4 +1,4 @@
-package com.csctracker.service;
+package com.csctracker.utils;
 
 import org.springframework.stereotype.Component;
 
