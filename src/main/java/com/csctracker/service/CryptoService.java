@@ -1,6 +1,5 @@
 package com.csctracker.service;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.Cipher;
@@ -12,7 +11,6 @@ import java.util.Base64;
 
 @Component
 public class CryptoService {
-    @Value("${crypto.key:12345678}")
     private String cryptoKey;
 
     public String decrypt(String text) throws Exception {
@@ -32,7 +30,7 @@ public class CryptoService {
 
     private Cipher getCipher(int mode) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException {
         if (cryptoKey == null) {
-            throw new RuntimeException("Exception: cryptoKey is null");
+            cryptoKey = System.getenv("CRYPTO_KEY");
         }
         var aesKey = new SecretKeySpec(cryptoKey.getBytes(), "AES");
         var cipher = Cipher.getInstance("AES");
