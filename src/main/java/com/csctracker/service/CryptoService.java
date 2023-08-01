@@ -12,7 +12,7 @@ import java.util.Base64;
 
 @Component
 public class CryptoService {
-    @Value("${crypto.key}")
+    @Value("${crypto.key:12345678}")
     private String cryptoKey;
 
     public String decrypt(String text) throws Exception {
