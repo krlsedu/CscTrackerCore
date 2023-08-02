@@ -11,6 +11,7 @@ pipeline {
                     result = sh(script: "git log -1 | grep 'Triggered Build'", returnStatus: true)
                     echo 'result ' + result
                     env.RELEASE_COMMIT = result == 0 ? '0' : '1'
+                    sh 'mvn versions:set versions:commit -DnewVersion=TEMP'
                 }
             }
         }

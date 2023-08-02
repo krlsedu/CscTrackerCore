@@ -10,7 +10,7 @@ import java.nio.file.Paths;
 @Slf4j
 @UtilityClass
 public class SecretsReader {
-    private static String readSecret(String secretName) {
+    public static String readSecret(String secretName) {
         String secret = null;
         try {
             secret = new String(Files.readAllBytes(Paths.get("/run/secrets/" + secretName))).trim();
