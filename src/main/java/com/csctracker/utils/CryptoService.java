@@ -30,7 +30,7 @@ public class CryptoService {
 
     private Cipher getCipher(int mode) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException {
         if (cryptoKey == null) {
-            cryptoKey = System.getenv("CRYPTO_KEY");
+            cryptoKey = SecretsReader.readSecret("crypto_key");
         }
         var aesKey = new SecretKeySpec(cryptoKey.getBytes(), "AES");
         var cipher = Cipher.getInstance("AES");
