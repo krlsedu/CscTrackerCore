@@ -15,7 +15,10 @@ public class SecretsReader {
         try {
             secret = new String(Files.readAllBytes(Paths.get("/run/secrets/" + secretName))).trim();
         } catch (IOException e) {
-            throw new RuntimeException("Error reading secret " + secretName, e);
+            secret = System.getenv(secretName);
+            if (secret == null || secret.isEmpty()) {
+                throw new RuntimeException("Error reading secret " + secretName, e);
+            }
         }
         return secret;
     }
