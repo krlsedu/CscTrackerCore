@@ -15,6 +15,10 @@ public class ServiceErrorUtil {
     private final ServiceErrorRepository serviceErrorRepository;
 
     public void save(Exception exception, HttpRequestWithBody request) {
+        save(exception, request, null);
+    }
+
+    public void save(Exception exception, HttpRequestWithBody request, String body) {
         try {
             var serviceError = new ServiceError();
             serviceError.setMessage(exception.getMessage());
@@ -22,7 +26,11 @@ public class ServiceErrorUtil {
             var urlParts = url.split("/");
             var service = urlParts[2].split(":")[0];
             serviceError.setService(service);
-            serviceError.setBody(request.getBody().toString());
+            if (body != null) {
+                serviceError.setBody(body);
+            } else {
+                serviceError.setBody(request.getBody().toString());
+            }
             serviceError.setHeaders(request.getHeaders().toString());
             serviceError.setMethod(request.getHttpMethod().name());
             serviceError.setUrl(url);
@@ -35,6 +43,10 @@ public class ServiceErrorUtil {
     }
 
     public void save(Exception exception, GetRequest request) {
+        save(exception, request, null);
+    }
+
+    public void save(Exception exception, GetRequest request, String body) {
         try {
             var serviceError = new ServiceError();
             serviceError.setMessage(exception.getMessage());
@@ -42,7 +54,11 @@ public class ServiceErrorUtil {
             var urlParts = url.split("/");
             var service = urlParts[2].split(":")[0];
             serviceError.setService(service);
-            serviceError.setBody(request.getBody().toString());
+            if (body != null) {
+                serviceError.setBody(body);
+            } else {
+                serviceError.setBody(request.getBody().toString());
+            }
             serviceError.setHeaders(request.getHeaders().toString());
             serviceError.setMethod(request.getHttpMethod().name());
             serviceError.setUrl(url);
