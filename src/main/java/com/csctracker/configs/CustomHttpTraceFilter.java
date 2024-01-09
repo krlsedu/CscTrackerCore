@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.MDC;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.web.util.ContentCachingRequestWrapper;
@@ -20,10 +21,13 @@ import java.io.UnsupportedEncodingException;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Arrays;
+import java.util.UUID;
 
 @Component
 @Slf4j
 public class CustomHttpTraceFilter extends OncePerRequestFilter {
+    public static final String CORRELATION_ID_HEADER_NAME = "x-correlation-id";
+    public static final String CORRELATION_ID_LOG_VAR_NAME = "correlationId";
 
     private final int maxPayloadLength = 1000;
 
@@ -45,6 +49,14 @@ public class CustomHttpTraceFilter extends OncePerRequestFilter {
 
 
         if (Arrays.stream(notLogUrls).noneMatch(request.getRequestURL().toString()::contains)) {
+            String correlationId = request.getHeader(CORRELATION_ID_HEADER_NAME);
+
+            if (correlationId == null) {
+                correlationId = UUID.randomUUID().toString();
+            }
+
+            MDC.put(CORRELATION_ID_LOG_VAR_NAME, correlationId);
+
             objectMapper.registerModule(new JavaTimeModule());
             objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
             var startInstant = Instant.now();
@@ -73,6 +85,7 @@ public class CustomHttpTraceFilter extends OncePerRequestFilter {
                         this.maxPayloadLength, request.getCharacterEncoding()));
             }
             log.info(objectMapper.writeValueAsString(httpTraceDTO));
+            MDC.remove(CORRELATION_ID_LOG_VAR_NAME);
 
             wrappedResponse.copyBodyToResponse();
         } else {

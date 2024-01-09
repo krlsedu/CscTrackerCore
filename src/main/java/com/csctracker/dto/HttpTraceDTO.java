@@ -22,4 +22,5 @@ public class HttpTraceDTO {
     private String name;
     private String type;
     private String msg;
+    private String requestId;
 }

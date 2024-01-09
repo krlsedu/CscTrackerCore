@@ -4,15 +4,18 @@ import com.csctracker.configs.ContentCaching;
 import com.csctracker.configs.UnAuthorized;
 import com.csctracker.model.User;
 import kong.unirest.HttpResponse;
+import org.slf4j.MDC;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
+
+import static com.csctracker.configs.CustomHttpTraceFilter.CORRELATION_ID_HEADER_NAME;
+import static com.csctracker.configs.CustomHttpTraceFilter.CORRELATION_ID_LOG_VAR_NAME;
 
 public class RequestInfo {
     public static ServletRequestAttributes getServletRequestAttributes() {
@@ -76,6 +79,16 @@ public class RequestInfo {
             String st = it.nextElement();
             headers.put(st, request.getHeader(st));
         }
+
+        try {
+            var mdc = MDC.get(CORRELATION_ID_LOG_VAR_NAME);
+            if (mdc != null) {
+                headers.put(CORRELATION_ID_HEADER_NAME, mdc);
+            }
+        } catch (Exception e) {
+            MDC.put("correlationId", headers.get(CORRELATION_ID_HEADER_NAME));
+        }
+
         return headers;
     }
 

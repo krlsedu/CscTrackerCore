@@ -8,12 +8,12 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import static com.csctracker.configs.CustomHttpTraceFilter.CORRELATION_ID_LOG_VAR_NAME;
+
 public class JsonEncoder extends EncoderBase<ILoggingEvent> {
     private final ObjectMapper mapper = new ObjectMapper()
             .setSerializationInclusion(JsonInclude.Include.NON_NULL)
             .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-    ;
-
     @Override
     public byte[] headerBytes() {
         return new byte[0];
@@ -29,6 +29,7 @@ public class JsonEncoder extends EncoderBase<ILoggingEvent> {
         }
         log.setName(iLoggingEvent.getLoggerName());
         log.setType(iLoggingEvent.getLevel().toString());
+        log.setRequestId(iLoggingEvent.getMDCPropertyMap().get(CORRELATION_ID_LOG_VAR_NAME));
         try {
             return (mapper.writeValueAsString(log) + "\n").getBytes();
         } catch (JsonProcessingException e) {
