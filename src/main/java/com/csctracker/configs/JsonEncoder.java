@@ -30,6 +30,7 @@ public class JsonEncoder extends EncoderBase<ILoggingEvent> {
         log.setName(iLoggingEvent.getLoggerName());
         log.setType(iLoggingEvent.getLevel().toString());
         log.setRequestId(iLoggingEvent.getMDCPropertyMap().get(CORRELATION_ID_LOG_VAR_NAME));
+        log.setAppName(iLoggingEvent.getMDCPropertyMap().get("appName"));
         try {
             return (mapper.writeValueAsString(log) + "\n").getBytes();
         } catch (JsonProcessingException e) {
