@@ -3,6 +3,7 @@ package com.csctracker.model;
 import com.csctracker.enums.UserType;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 
@@ -17,6 +18,10 @@ public class User {
 
     private String email;
     private String password;
+
+    @Lob
+    @Type(type = "org.hibernate.type.TextType")
+    private String requestId;
 
     @Enumerated(EnumType.STRING)
     private UserType type;

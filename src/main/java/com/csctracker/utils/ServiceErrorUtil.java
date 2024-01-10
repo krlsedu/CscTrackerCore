@@ -6,7 +6,10 @@ import kong.unirest.GetRequest;
 import kong.unirest.HttpRequestWithBody;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.MDC;
 import org.springframework.stereotype.Service;
+
+import static com.csctracker.configs.CustomHttpTraceFilter.CORRELATION_ID_LOG_VAR_NAME;
 
 @Service
 @Slf4j
@@ -36,6 +39,7 @@ public class ServiceErrorUtil {
             serviceError.setUrl(url);
             serviceError.setDateTime(new java.util.Date());
             serviceError.setResponse(request.asString().getBody());
+            serviceError.setRequestId(MDC.get(CORRELATION_ID_LOG_VAR_NAME));
             serviceErrorRepository.save(serviceError);
         } catch (Exception e) {
             log.error("Error saving error: {}", e.getMessage());
@@ -64,6 +68,7 @@ public class ServiceErrorUtil {
             serviceError.setUrl(url);
             serviceError.setDateTime(new java.util.Date());
             serviceError.setResponse(request.asString().getBody());
+            serviceError.setRequestId(MDC.get(CORRELATION_ID_LOG_VAR_NAME));
             serviceErrorRepository.save(serviceError);
         } catch (Exception e) {
             log.error("Error saving error: {}", e.getMessage());
@@ -77,6 +82,7 @@ public class ServiceErrorUtil {
             serviceError.setService(service);
             serviceError.setUrl(url);
             serviceError.setDateTime(new java.util.Date());
+            serviceError.setRequestId(MDC.get(CORRELATION_ID_LOG_VAR_NAME));
             serviceErrorRepository.save(serviceError);
         } catch (Exception e) {
             log.error("Error saving error: {}", e.getMessage());

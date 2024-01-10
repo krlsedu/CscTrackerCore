@@ -32,6 +32,10 @@ public class Configs {
     @Type(type = "org.hibernate.type.TextType")
     private String configs;
 
+    @Lob
+    @Type(type = "org.hibernate.type.TextType")
+    private String requestId;
+
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;

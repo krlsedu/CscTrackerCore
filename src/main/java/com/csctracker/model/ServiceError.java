@@ -50,4 +50,8 @@ public class ServiceError {
 
     private Date dateTime;
 
+    @Lob
+    @Type(type = "org.hibernate.type.TextType")
+    private String requestId;
+
 }
