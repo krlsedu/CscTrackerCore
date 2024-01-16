@@ -1,5 +1,6 @@
 package com.csctracker.service;
 
+import com.csctracker.configs.ApplicationInfo;
 import com.csctracker.configs.ContentCaching;
 import com.csctracker.configs.UnAuthorized;
 import com.csctracker.model.User;
@@ -125,7 +126,7 @@ public class RequestInfo {
     }
 
     public static String getRequestId() {
-        return getRequestId(null);
+        return getRequestId(ApplicationInfo.getApplicationName());
     }
 
     public static String getRequestId(String appName) {
