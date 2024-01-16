@@ -13,6 +13,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 import static com.csctracker.configs.CustomHttpTraceFilter.CORRELATION_ID_HEADER_NAME;
 import static com.csctracker.configs.CustomHttpTraceFilter.CORRELATION_ID_LOG_VAR_NAME;
@@ -119,5 +120,25 @@ public class RequestInfo {
                     throw new RuntimeException("Internal Server Error");
             }
         }
+    }
+
+    public static String getRequestId() {
+        return getRequestId(null);
+    }
+
+    public static String getRequestId(String appName) {
+        var requestId = getHeader(CORRELATION_ID_HEADER_NAME);
+        if (requestId == null) {
+            requestId = MDC.get(CORRELATION_ID_LOG_VAR_NAME);
+        }
+        if (requestId == null) {
+            if (appName != null) {
+                requestId = appName + "-" + UUID.randomUUID();
+            } else {
+                requestId = UUID.randomUUID().toString();
+            }
+            MDC.put(CORRELATION_ID_LOG_VAR_NAME, requestId);
+        }
+        return requestId;
     }
 }
