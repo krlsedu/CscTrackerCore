@@ -7,7 +7,7 @@
     <artifactId>CscTrackerCore</artifactId>
     <name>CscTrackerCore</name>
     <description>CscTrackerCore</description>
-    <version>24.03.002</version>
+    <version>24.03.003</version>
     <packaging>jar</packaging>
 
     <properties>
