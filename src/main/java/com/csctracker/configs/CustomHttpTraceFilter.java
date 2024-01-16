@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.MDC;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.web.util.ContentCachingRequestWrapper;
@@ -85,6 +86,8 @@ public class CustomHttpTraceFilter extends OncePerRequestFilter {
             }
 
             log.info(objectMapper.writeValueAsString(httpTraceDTO));
+
+            MDC.remove(CORRELATION_ID_LOG_VAR_NAME);
 
             wrappedResponse.copyBodyToResponse();
         } else {
