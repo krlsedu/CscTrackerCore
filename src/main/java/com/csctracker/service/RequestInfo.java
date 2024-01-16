@@ -4,6 +4,7 @@ import com.csctracker.configs.ContentCaching;
 import com.csctracker.configs.UnAuthorized;
 import com.csctracker.model.User;
 import kong.unirest.HttpResponse;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.MDC;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -18,6 +19,7 @@ import java.util.UUID;
 import static com.csctracker.configs.CustomHttpTraceFilter.CORRELATION_ID_HEADER_NAME;
 import static com.csctracker.configs.CustomHttpTraceFilter.CORRELATION_ID_LOG_VAR_NAME;
 
+@Slf4j
 public class RequestInfo {
     public static ServletRequestAttributes getServletRequestAttributes() {
         return (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
@@ -127,10 +129,19 @@ public class RequestInfo {
     }
 
     public static String getRequestId(String appName) {
-        var requestId = getHeader(CORRELATION_ID_HEADER_NAME);
+        var requestId = MDC.get(CORRELATION_ID_LOG_VAR_NAME);
+
         if (requestId == null) {
-            requestId = MDC.get(CORRELATION_ID_LOG_VAR_NAME);
+            try {
+                requestId = getHeader(CORRELATION_ID_HEADER_NAME);
+                if (requestId != null) {
+                    MDC.put(CORRELATION_ID_LOG_VAR_NAME, requestId);
+                }
+            } catch (Exception e) {
+                // ignore
+            }
         }
+
         if (requestId == null) {
             if (appName != null) {
                 requestId = appName + "-" + UUID.randomUUID();
